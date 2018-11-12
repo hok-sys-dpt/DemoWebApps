@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>在庫管理</title>
+    <script src="/Scripts/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div>
+        <h2>在庫の更新</h2>
+        <p>
+            品名：
+            <select id="productName">
+                <option>選択してください</option>
+            </select>
+        </p>
+
+        <p>在庫数：<input type="number" id="quantity" />個</p>
+    </div>
+    <div>
+        <input type="submit" value="更新" id="updateButton">
+    </div>
+    <script>
+        $(document).ready(function () {
+            var stockList = [];
+            $.ajax({
+                url: "",
+                type: "GET"
+            }).done(function (responce) {
+                stockList = responce;
+                $.each(responce, function (index, value) {
+                    $("#productName").append("<option value=" + value.productId + ">" + value.name + "</option>");
+                });
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+
+            $("#productName").on("change", function () {
+                var id = $("#productName").val();
+                if (!id) {
+                    return;
+                }
+                var stock = $.grep(stockList, function (value) {
+                    return id == value.Id;
+                });
+
+                $("#quantity").text(stock[0].quantity);
+            });
+
+            $("#updateButton").on("click", function () {
+                $("#productName").empty();
+                $("#productName").append("<option>選択してください</option>");
+
+                var data = {
+                    Id: $("#productName").val(),
+                    Quantity: $("#quantity").val()
+                };
+
+                $.ajax({
+                    url: "" + data.Id,
+                    type: "PUT",
+                    data: data,
+                    dataType: "json"
+                }).done(function (responce) {
+                    alert("更新しました");
+                }).fail(function (error) {
+                    alert(JSON.stringify(error));
+                });
+                $.ajax({
+                    url: "",
+                    type: "GET"
+                }).done(function (responce) {
+                    stockList = responce;
+                    $("#productName").empty();
+                    $("#productName").append("<option>選択してください</option>");
+                    $.each(responce, function (index, value) {
+                        $("#productName").append("<option value=" + value.productId + ">" + value.name + "</option>");
+                    });
+                }).fail(function (error) {
+                    alert(JSON.stringify(error));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
