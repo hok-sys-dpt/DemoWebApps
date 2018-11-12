@@ -46,7 +46,7 @@
                 }
                 // 在庫リストからプルダウンで選択した商品のIDに一致する在庫を抽出
                 var stock = $.grep(stockList, function (value) {
-                    return id == value.Id;
+                    return id == value.productId;
                 });
 
                 // 在庫リストから選択した商品の在庫数を表示
