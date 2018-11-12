@@ -59,8 +59,8 @@
                 $("#productName").append("<option>選択してください</option>");
 
                 var data = {
-                    Id: $("#productName").val(),
-                    Quantity: $("#quantity").val()
+                    productId: $("#productName").val(),
+                    quantity: $("#quantity").val()
                 };
                 // 在庫の更新
                 $.ajax({
