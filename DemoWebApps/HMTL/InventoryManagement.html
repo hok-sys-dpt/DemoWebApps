@@ -23,11 +23,14 @@
     <script>
         $(document).ready(function () {
             var stockList = [];
+
+            // 在庫リストの取得
             $.ajax({
                 url: "",
                 type: "GET"
             }).done(function (responce) {
                 stockList = responce;
+                // 在庫リストのプルダウンを作成
                 $.each(responce, function (index, value) {
                     $("#productName").append("<option value=" + value.productId + ">" + value.name + "</option>");
                 });
@@ -35,18 +38,22 @@
                 alert(JSON.stringify(error));
             });
 
+            // 在庫の表示
             $("#productName").on("change", function () {
                 var id = $("#productName").val();
                 if (!id) {
                     return;
                 }
+                // 在庫リストからプルダウンで選択した商品のIDに一致する在庫を抽出
                 var stock = $.grep(stockList, function (value) {
                     return id == value.Id;
                 });
 
+                // 在庫リストから選択した商品の在庫数を表示
                 $("#quantity").text(stock[0].quantity);
             });
 
+            // 更新ボタン押下時
             $("#updateButton").on("click", function () {
                 $("#productName").empty();
                 $("#productName").append("<option>選択してください</option>");
@@ -55,7 +62,7 @@
                     Id: $("#productName").val(),
                     Quantity: $("#quantity").val()
                 };
-
+                // 在庫の更新
                 $.ajax({
                     url: "" + data.Id,
                     type: "PUT",
@@ -66,13 +73,17 @@
                 }).fail(function (error) {
                     alert(JSON.stringify(error));
                 });
+                // 在庫リストの再取得
                 $.ajax({
                     url: "",
                     type: "GET"
                 }).done(function (responce) {
                     stockList = responce;
+                    // 在庫リストを初期化
                     $("#productName").empty();
                     $("#productName").append("<option>選択してください</option>");
+
+                    // 在庫リスト再取得
                     $.each(responce, function (index, value) {
                         $("#productName").append("<option value=" + value.productId + ">" + value.name + "</option>");
                     });
