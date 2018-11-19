@@ -75,7 +75,7 @@
                 $("#quantity").val("");
             });
 
-            // 在庫の表示
+            // 在庫数の表示
             $("#productName").on("change", function () {
                 var id = $("#productName").val();
                 if (!id) {
@@ -92,6 +92,10 @@
 
             // 更新ボタン押下時
             $("#updateButton").on("click", function () {
+                if (!$("#inventory").val() || !$("#productName").val() || !$("#quantity").val()){
+                    return;
+                }
+
                 // 更新前の品名を退避
                 var selectedStockBeforeUpdate = $("#productName").val();
 
