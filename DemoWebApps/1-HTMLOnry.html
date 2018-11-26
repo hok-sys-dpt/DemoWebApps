@@ -1,43 +1,51 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>在庫管理</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="css/StyleSheet.css" rel="stylesheet">
 </head>
 <body>
     <div>
         <h2>在庫の更新</h2>
-        <p>
-            倉庫の選択:
-            <select id="inventory">
-                <option value="0">選択してください</option>
-                <option value="1">倉庫1</option>
-                <option value="2">倉庫2</option>
-                <option value="3">倉庫3</option>
-                <option value="4">倉庫4</option>
-                <option value="5">倉庫5</option>
-                <option value="6">倉庫6</option>
-                <option value="7">倉庫7</option>
-                <option value="8">倉庫8</option>
-                <option value="9">倉庫9</option>
-                <option value="10">倉庫10</option>
-                <option value="11">倉庫11</option>
-                <option value="12">倉庫12</option>
-                <option value="13">倉庫13</option>
-                <option value="14">倉庫14</option>
-                <option value="15">倉庫15</option>
-            </select>
-        </p>
-        <p>
-            品名：
-            <select id="productName">
-                <option>選択してください</option>
-            </select>
-        </p>
-        <p>在庫数：<input type="number" id="quantity" />個</p>
-    </div>
-    <div>
-        <input type="submit" value="更新" id="updateButton">
+        <div class="input-form">
+            <p>
+                <h6>倉庫の選択</h6>
+                <select id="inventory" class="form-control input-field">
+                    <option value="0">選択してください</option>
+                    <option value="1">倉庫1</option>
+                    <option value="2">倉庫2</option>
+                    <option value="3">倉庫3</option>
+                    <option value="4">倉庫4</option>
+                    <option value="5">倉庫5</option>
+                    <option value="6">倉庫6</option>
+                    <option value="7">倉庫7</option>
+                    <option value="8">倉庫8</option>
+                    <option value="9">倉庫9</option>
+                    <option value="10">倉庫10</option>
+                    <option value="11">倉庫11</option>
+                    <option value="12">倉庫12</option>
+                    <option value="13">倉庫13</option>
+                    <option value="14">倉庫14</option>
+                    <option value="15">倉庫15</option>
+                </select>
+            </p>
+            <p>
+                <h6>品名</h6>
+                <select id="productName" class="form-control input-field">
+                    <option>選択してください</option>
+                </select>
+            </p>
+
+            <p>
+                <h6>在庫数</h6>
+                <input type="number" id="quantity" class="form-control input-field" />個
+            </p>
+            <div>
+                <input type="submit" value="更新" id="updateButton" class="btn btn-primary btn-wide">
+            </div>
+        </div>
     </div>
 </body>
 </html>
