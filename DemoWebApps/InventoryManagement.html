@@ -92,11 +92,11 @@
 
             // 更新ボタン押下時
             $("#updateButton").on("click", function () {
-                if (!$("#inventory").val() || !$("#productName").val() || !$("#quantity").val()){
+                if (!$("#inventory").val() || !$("#productName").val() || !$("#quantity").val()) {
                     return;
                 }
 
-                // 更新前の品名を退避
+                // ★更新前の品名を退避
                 var selectedStockBeforeUpdate = $("#productName").val();
 
                 // 在庫の更新
@@ -113,33 +113,33 @@
                 }).done(function (responce) {
                     alert("更新しました");
 
-                }).fail(function (error) {
-                    alert(JSON.stringify(error));
-                });
-                // 在庫リストの再取得
-                $.ajax({
-                    url: "http://demowebappapi.azurewebsites.net/api/Stocks",
-                    type: "GET"
-                }).done(function (responce) {
-                    stocks = responce;
+                    // ★在庫リストの再取得
+                    $.ajax({
+                        url: "http://demowebappapi.azurewebsites.net/api/Stocks",
+                        type: "GET"
+                    }).done(function (responce) {
+                        stocks = responce;
 
-                    // 在庫リストを初期化
-                    $("#productName").empty();
-                    $("#productName").append("<option>選択してください</option>");
+                        // 在庫リストを初期化
+                        $("#productName").empty();
+                        $("#productName").append("<option>選択してください</option>");
 
-                    // 倉庫単位に絞り込み
-                    inventoryStocks = $.grep(stocks, function (value) {
-                        return $("#inventory").val() == value.InventoryId;
+                        // 倉庫単位に絞り込み
+                        inventoryStocks = $.grep(stocks, function (value) {
+                            return $("#inventory").val() == value.InventoryId;
+                        });
+
+                        // 在庫リストのプルダウン作成
+                        $.each(inventoryStocks, function (index, value) {
+                            $("#productName").append("<option value=" + value.ProductId + ">" + value.Name + "</option>");
+                        });
+
+                        // 更新ボタン押下時に選択していた品名を再表示
+                        $("#productName").val(selectedStockBeforeUpdate);
+
+                    }).fail(function (error) {
+                        alert(JSON.stringify(error));
                     });
-
-                    // 在庫リストのプルダウン作成
-                    $.each(inventoryStocks, function (index, value) {
-                        $("#productName").append("<option value=" + value.ProductId + ">" + value.Name + "</option>");
-                    });
-
-                    // 更新ボタン押下時に選択していた品名を再表示
-                    $("#productName").val(selectedStockBeforeUpdate);
-
                 }).fail(function (error) {
                     alert(JSON.stringify(error));
                 });
