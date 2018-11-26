@@ -61,9 +61,9 @@
                 alert(JSON.stringify(error));
             });
 
-            //在庫リストの表示
+            // 品名セレクトボックスを作成
             $("#inventory").on("change", function () {
-                // 在庫リストを初期化
+                // 品名セレクトボックスを初期化
                 $("#productName").empty();
                 $("#productName").append("<option>選択してください</option>");
 
@@ -72,11 +72,12 @@
                     return $("#inventory").val() == value.InventoryId;
                 });
 
-                // 在庫リストのプルダウン作成
+                // セレクトボックスを作成
                 $.each(inventoryStocks, function (index, value) {
                     $("#productName").append("<option value=" + value.ProductId + ">" + value.Name + "</option>");
                 });
 
+                // 在庫数を初期化
                 $("#quantity").val("");
             });
 
@@ -86,12 +87,12 @@
                 if (!id) {
                     return;
                 }
-                // 在庫リストからプルダウンで選択した商品のIDに一致する在庫を抽出
+                // 品名セレクトボックスで選択した商品のIDに一致する在庫を抽出
                 var stock = $.grep(inventoryStocks, function (value) {
                     return id == value.ProductId;
                 });
 
-                // 在庫リストから選択した商品の在庫数を表示
+                // 品名セレクトボックスから選択した商品の在庫数を表示
                 $("#quantity").val(stock[0].Quantity);
             });
         });
