@@ -49,22 +49,26 @@
     </div>
     <script>
         $(document).ready(function () {
+            // Ajaxで取得した全倉庫の在庫リスト
             var stocks = [];
+            // 倉庫単位の在庫リスト
             var inventoryStocks = [];
 
             // 在庫リストの取得
             $.ajax({
                 url: "http://demowebappapi.azurewebsites.net/api/Stocks",
                 type: "GET"
+            // 成功したとき
             }).done(function (responce) {
                 stocks = responce;
+            // 失敗したときはアラートを表示
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
 
-            // 品名セレクトボックスを作成
+            // 品名セレクトボックスを作成　倉庫のchangeイベントを契機に関数を実行（イベントハンドラの登録）
             $("#inventory").on("change", function () {
-                // 品名セレクトボックスを初期化
+                // 品名セレクトボックスを初期化　emptyで空にして、appendで子要素を追加
                 $("#productName").empty();
                 $("#productName").append("<option value=\"\">選択してください</option>");
 
@@ -82,7 +86,7 @@
                 $("#quantity").val("");
             });
 
-            // 在庫数の表示
+            // 在庫数の表示 品名のchangeイベントを契機に関数を実行（イベントハンドラの登録）
             $("#productName").on("change", function () {
                 var id = $("#productName").val();
                 // 選択してくださいを選択したときは在庫数を初期化
@@ -100,13 +104,13 @@
                 $("#quantity").val(stock[0].Quantity);
             });
 
-            // 更新ボタン押下時
+            // 更新ボタン押下時　更新ボタンのclickイベントを契機に関数を実行（イベントハンドラの登録）
             $("#updateButton").on("click", function () {
                 if (!$("#inventory").val() || !$("#productName").val() || !$("#quantity").val()) {
                     return;
                 }
 
-                // 在庫更新データを作成
+                // 在庫更新データのオブジェクトを作成
                 var data = {
                     InventoryId: $("#inventory").val(),
                     ProductId: $("#productName").val(),
@@ -118,9 +122,10 @@
                     type: "PUT",
                     data: data,
                     dataType: "json"
+                // 成功したときはアラートで更新したと表示
                 }).done(function (responce) {
                     alert("更新しました");
-
+                // 失敗したときはアラートでエラーを表示
                 }).fail(function (error) {
                     alert(JSON.stringify(error));
                 });

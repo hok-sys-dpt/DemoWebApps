@@ -49,20 +49,24 @@
     </div>
     <script>
         $(document).ready(function () {
+            // Ajaxで取得した全倉庫の在庫リスト
             var stocks = [];
+            // 倉庫単位の在庫リスト
             var inventoryStocks = [];
 
             // 在庫リストの取得
             $.ajax({
                 url: "http://demowebappapi.azurewebsites.net/api/Stocks",
                 type: "GET"
+            // 成功したとき
             }).done(function (responce) {
                 stocks = responce;
+            // 失敗したときはアラートを表示
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
 
-            // 品名セレクトボックスを作成
+            // 品名セレクトボックスを作成 品名のchangeイベントを契機に関数を実行（イベントハンドラの登録）
             $("#inventory").on("change", function () {
                 // 品名セレクトボックスを初期化
                 $("#productName").empty();
@@ -82,7 +86,7 @@
                 $("#quantity").val("");
             });
 
-            // 在庫数の表示
+            // 在庫数の表示 品名のchangeイベントを契機に関数を実行（イベントハンドラの登録）
             $("#productName").on("change", function () {
                 var id = $("#productName").val();
                 // 選択してくださいを選択したときは在庫数を初期化
@@ -100,7 +104,7 @@
                 $("#quantity").val(stock[0].Quantity);
             });
 
-            // 更新ボタン押下時
+            // 更新ボタン押下時　更新ボタンのclickイベントを契機に関数を実行（イベントハンドラの登録）
             $("#updateButton").on("click", function () {
                 if (!$("#inventory").val() || !$("#productName").val() || !$("#quantity").val()) {
                     return;
@@ -109,7 +113,7 @@
                 // ★更新前の品名を退避
                 var selectedStockBeforeUpdate = $("#productName").val();
 
-                // 在庫更新データを作成
+                // 在庫更新データのオブジェクトを作成
                 var data = {
                     InventoryId: $("#inventory").val(),
                     ProductId: $("#productName").val(),
@@ -121,6 +125,7 @@
                     type: "PUT",
                     data: data,
                     dataType: "json"
+                // 成功したときはアラートで更新したと表示し、在庫を再取得する。
                 }).done(function (responce) {
                     alert("更新しました");
 
@@ -128,10 +133,11 @@
                     $.ajax({
                         url: "http://demowebappapi.azurewebsites.net/api/Stocks",
                         type: "GET"
+                    // 成功したときはstocksを上書きし、品名のセレクトボックスを再作成
                     }).done(function (responce) {
                         stocks = responce;
 
-                        // 在庫リストを初期化
+                        // 品名セレクトボックスを初期化
                         $("#productName").empty();
                         $("#productName").append("<option>選択してください</option>");
 
@@ -140,17 +146,18 @@
                             return $("#inventory").val() == value.InventoryId;
                         });
 
-                        // 在庫リストのプルダウン作成
+                        // 品名のセレクトボックス作成
                         $.each(inventoryStocks, function (index, value) {
                             $("#productName").append("<option value=" + value.ProductId + ">" + value.Name + "</option>");
                         });
 
                         // 更新ボタン押下時に選択していた品名を再表示
                         $("#productName").val(selectedStockBeforeUpdate);
-
+                    // 失敗したときはアラートでエラーを表示
                     }).fail(function (error) {
                         alert(JSON.stringify(error));
                     });
+                // 失敗したときはアラートでエラーを表示
                 }).fail(function (error) {
                     alert(JSON.stringify(error));
                 });
